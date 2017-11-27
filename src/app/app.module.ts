@@ -1,18 +1,94 @@
+﻿import { NgModule, CUSTOM_ELEMENTS_SCHEMA }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { FormsModule }    from '@angular/forms';
+import { HttpModule } from '@angular/http';
 
+// Material imports
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material';
+//import {MatButtonModule} from '@angular/material/button';
+import {MatSelectModule} from '@angular/material/select';
+import {MatMenuModule} from '@angular/material/menu';
+//import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
-import { AppComponent } from './app.component';
+//Drag and drop module
+import { DndModule } from 'ng2-dnd';
+
+// used to create fake backend
+import { fakeBackendProvider } from './_helpers/index';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import { BaseRequestOptions } from '@angular/http';
+
+import { AppComponent }  from './app.component';
+import { routing }        from './app.routing';
+
+import { AlertComponent } from './_directives/index';
+import { AuthGuard } from './_guards/index';
+import { AlertService, AuthenticationService, UserService, BoardService } from './_services/index';
+import { HomeComponent, CreateBoardDialog } from './home/index';
+import { LoginComponent } from './login/index';
+import { RegisterComponent } from './register/index';
+import { NavbarComponent } from './navbar/index';
+import { MultiSortableComponent } from './_multisort/index';
+import { BoardComponent, CreateListDialog, CreateTaskDialog } from './board/index';
 
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        routing,
+        BrowserAnimationsModule,
+
+        // import d&d module
+        DndModule.forRoot(),
+        //Material Elements imports
+        MatButtonModule, 
+        MatCheckboxModule,
+        MatGridListModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatMenuModule
+    ],
+    declarations: [
+        AppComponent,
+        AlertComponent,
+        HomeComponent,
+        CreateBoardDialog,//create Board
+        LoginComponent,
+        RegisterComponent,
+        NavbarComponent,
+        MultiSortableComponent,
+        BoardComponent,
+        CreateListDialog,//create List dialog
+        CreateTaskDialog
+    ],
+    entryComponents: [
+        CreateBoardDialog,
+        CreateListDialog,
+        CreateTaskDialog
+    ],
+    providers: [
+        AuthGuard,
+        AlertService,
+        AuthenticationService,
+        UserService,
+        BoardService,
+
+        // providers used to create fake backend
+        fakeBackendProvider,
+        MockBackend,
+        BaseRequestOptions
+    ],
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+    bootstrap: [AppComponent]
 })
+
 export class AppModule { }

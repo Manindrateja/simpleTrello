@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>New List</h2>
+<mat-dialog-content>
+	<mat-form-field>
+    	<input matInput #input placeholder="Enter List name" [(ngModel)]="data.name">
+  	</mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <!-- <button mat-button [mat-dialog-close]="sendData()">Cancel</button> -->
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <!-- Can optionally provide a result for the closing dialog. -->
+  <button mat-button [mat-dialog-close]="data" [disabled]="!data.name">Create</button>
+</mat-dialog-actions>

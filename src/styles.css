@@ -1,1 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.navbar {
+    background: rgba(0,0,0,.15);
+    margin: 0px;
+    border: 1px solid transparent;
+}
+/*
+body{
+	background: #838c91;
+	color :#fff;
+}
+*/
+
+ /*You can add global styles to this file, and also import other style files */
+/*.navbar {
+    background: rgba(0,0,0,.15);
+    margin: 0px;
+    border: 1px solid transparent;
+}
+
+a{
+	color :#fff;
+}
+a:hover{
+	color: #000;
+}
+
+::-moz-selection {
+    color: #838c91;
+    background: #fff;
+}
+::selection{
+    color: #838c91;
+    background: #fff;
+}*/

@@ -1,0 +1,72 @@
+<div class="board-wrapper">
+<div class="board-base">
+	<h3 style="padding: 0px 20px;margin: 0px;">
+		{{board?.name}}
+				<!-- <button mat-button [matMenuTriggerFor]="menu">Menu</button> -->
+		        <!-- <button md-icon-button [matMenuTriggerFor]="menu"> <md-icon>more_vert</md-icon> </button>
+				<mat-menu #menu="matMenu">
+				  <button mat-menu-item>Add Task!</button>
+				  <button mat-menu-item>Delete List</button>
+				</mat-menu> -->
+
+		<input type="checkbox" [(ngModel)]="dragList"/>
+	</h3>
+	<div class="board-container">
+	<div *ngIf="board" class="board" dnd-sortable-container [sortableData]="board.lists" [dropZones]="['container-dropZone']">
+	    <div  *ngFor="let list of board.lists; let x= index" class="board-list" dnd-sortable [sortableIndex]="x" [dragEnabled]="dragList" (onDropSuccess)="listItemorder(list)">
+		    <div class="panel panel-warning">
+		        <div class="panel-heading">
+		        {{list.name}}
+		        <!-- <button mat-button (click)= addTask(list.id)>Add task!</button> -->
+		        <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
+				    <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+				 </button> -->
+
+		        <i class="material-icons" [matMenuTriggerFor]="menu">more_vert</i> 
+				<mat-menu #menu="matMenu">
+				  <button mat-menu-item (click)= addTask(list.id)>Add Task!</button>
+				  <button mat-menu-item>Delete List</button>
+				</mat-menu>
+		        </div>
+		        <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="list.tasklists" style="200px">
+		            <ul class="list-group" *ngIf="list.tasklists.length" >
+		                <li *ngFor="let item of list.tasklists; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i"  [dragEnabled]="!dragList" (mouseenter)="setDragList(false);$event.stopPropagation();" (mouseleave)="setDragList(true);$event.stopPropagation();" (onDropSuccess)="taskItemMovedordered(item)">
+		                	{{item.name}} - {{item.orderNumber}}
+		                </li>
+		            </ul>
+		        </div>
+		    </div>
+	    </div>
+	    <div (click)= openDialog() style="width: 300px;display: inline-block;">
+		    <div class="panel panel-warning">
+		        <div class="panel-heading">
+		        Add List
+		        </div>
+		    </div>
+	    </div>
+	</div>
+	</div>
+</div>
+</div>
+<!-- <div class="col-sm-3">
+    Drag Containers <input type="checkbox" [(ngModel)]="dragOperation"/>
+    <div dnd-sortable-container [sortableData]="containers" [dropZones]="['container-dropZone']">
+        <div class="col-sm3"
+                *ngFor="let container of containers; let i = index"
+                dnd-sortable [sortableIndex]="i" [dragEnabled]="dragOperation">
+            <div class="panel panel-warning"
+                dnd-sortable-container [sortableData]="container.widgets" [dropZones]="['widget-dropZone']">
+                <div class="panel-heading">
+                    {{container.id}} - {{container.name}}
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li *ngFor="let widget of container.widgets; let x = index" class="list-group-item"
+                            dnd-sortable [sortableIndex]="x" [dragEnabled]="!dragOperation"
+                            [dragData]="widget">{{widget.name}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

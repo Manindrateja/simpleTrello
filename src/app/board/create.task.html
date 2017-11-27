@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>New List {{data | json}}</h2>
+<mat-dialog-content>
+	<mat-form-field>
+    	<input matInput #input placeholder="Task name" [(ngModel)]="data.name">
+  	</mat-form-field>
+  	<mat-form-field>
+    	<input matInput #input placeholder="Task title" [(ngModel)]="data.title">
+  	</mat-form-field>
+  	<mat-form-field>
+    	<input matInput #input placeholder="Task description" [(ngModel)]="data.description">
+  	</mat-form-field>
+  	<!-- <mat-form-field>
+    	<input matInput #input placeholder="Enter Board name" [(ngModel)]="data.assignedTo	">
+  	</mat-form-field> -->
+  	<mat-form-field>
+	  <mat-select placeholder="Assigned to" [(ngModel)]="data.assignedTo">
+	    <mat-option *ngFor="let user of users" [value]="user.id">
+	      {{ user.username }}
+	    </mat-option>
+	  </mat-select>
+	</mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <!-- <button mat-button [mat-dialog-close]="sendData()">Cancel</button> -->
+  <button mat-button [mat-dialog-close]>Cancel</button>
+  <!-- Can optionally provide a result for the closing dialog. -->
+  <button mat-button [mat-dialog-close]="data" [disabled]="!data.name && !data.title && !data.description && !data.assignedTo">Create</button>
+</mat-dialog-actions>

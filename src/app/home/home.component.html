@@ -1,0 +1,30 @@
+﻿<!-- <div class="col-md-12">
+    <h1>Hi {{currentUser.firstName}}!</h1>
+    <p>You're logged in with Angular 2!!</p>
+    <h3>All registered users:</h3>
+    <ul>
+        <li *ngFor="let user of users">
+            {{user.username}} ({{user.firstName}} {{user.lastName}})
+            - <a (click)="deleteUser(user.id)">Delete</a>
+        </li>
+    </ul>
+    <p><a [routerLink]="['/login']">Logout</a></p>
+</div> -->
+<div class="col-md-12">
+    <mat-grid-list cols="4" rowHeight="100px">
+      <mat-grid-tile class="createBoard"
+          [colspan]="1"
+          [rowspan]="1"
+          (click)="openDialog()">
+            Create Board
+      </mat-grid-tile>
+      <mat-grid-tile
+          *ngFor="let user of users"
+          [colspan]="1"
+          [rowspan]="1"
+          (click)="gotoBoard(user)"
+          >
+            {{user.name}}
+      </mat-grid-tile>
+    </mat-grid-list>
+</div>
