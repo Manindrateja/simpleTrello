@@ -49,6 +49,18 @@ export class BoardService {
         return this.http.post('http://127.0.0.1:5000/saveBoard', data, this.jwt()).map((response: Response) => response.json());
     }
 
+    addMember(data: any){
+        return this.http.post('http://127.0.0.1:5000/addMember', data, this.jwt()).map((response: Response) => response.json());   
+    }
+
+    removeMember(data: any){
+        return this.http.post('http://127.0.0.1:5000/removeMember', data, this.jwt()).map((response: Response) => response.json());   
+    }
+
+    checkBoardChange(data: any){
+        return this.http.post('http://127.0.0.1:5000/checkBoardChange', data, this.jwt()).map((response: Response) => response.json());   
+    }
+
     private jwt() {
 
         var headers = new Headers({ 'Content-Type': 'application/json' });

@@ -19,6 +19,7 @@ export class BoardComponent implements OnInit{
     newlistName: string;
     boardId: string = '5a1a81fa52b310469230c1a6';
     board: any;
+    newMember: string;
     loading: boolean = false;
 
     dragList: boolean = true;
@@ -26,21 +27,28 @@ export class BoardComponent implements OnInit{
       this.dragList = value;
     }
     constructor(private boardService: BoardService, public userService: UserService, public dialog: MatDialog) {
-        
+         
     }
 
-    // constructor(
-    //     private router: Router,
-    //     private paramMap: ParamMap,
-    //     private userService: UserService,
-    //     private boardService: BoardService) { }
-
-        //this.router.navigate(['/login']);
+    //this.router.navigate(['/login']);
     ngOnInit() {
         this.boardId = JSON.parse(localStorage.getItem('currentBoard'));
         this.getBoard();
         this.getAllUsers();
         //console.log(paramMap);
+        this.longpool();
+    }
+
+    longpool(): void{
+        setInterval(() => { this.checkBoardChange(); }, 30000);
+    }
+
+    checkBoardChange(): void{
+      
+      this.boardService.checkBoardChange({time : this.board.timeStamp, boardId : this.board.id}).subscribe(response => { 
+         if(response === "1")
+           this.getBoard();
+      });
     }
 
     private getBoard() {
@@ -122,14 +130,27 @@ export class BoardComponent implements OnInit{
         });
     }
 
-    sortMoveTask1(): void{
-
+    addMember(){
+      let data = {
+        userId: this.newMember,
+        boardId: this.board.id
+      }
+      this.boardService.addMember(data).subscribe(response => { this.getBoard() });
     }
-    sortList1():void{
 
+    removeMember(id : string){
+       let data = {
+        userId: id,
+        boardId: this.board.id
+      }
+      this.boardService.removeMember(data).subscribe(response => { this.getBoard() }); 
     }
 
-    sortMoveTask(data : any, list: any, index: number): void{
+    sortMoveTask(){
+      this.saveAll();
+    }
+
+    sortMoveTask1(data : any, list: any, index: number): void{
 
       console.log(list);
       console.log(data,  list.id);
@@ -138,7 +159,8 @@ export class BoardComponent implements OnInit{
         console.log('sortTask');
         let sortReq = {
           listId : list.id,
-          tasklists : []
+          tasklists : [],
+          boardId: this.board.id
         }
 
         for (let item of list.tasklists) {
@@ -155,7 +177,8 @@ export class BoardComponent implements OnInit{
               tasklists : []
           },
           fromlistId : data.fromlistId,
-          id: data.id
+          id: data.id,
+          boardId: this.board.id
         }
 
         for (let item of list.tasklists) {
@@ -196,8 +219,10 @@ export class BoardComponent implements OnInit{
         this.boardService.moveTask(sortReq).subscribe(response => { this.getBoard() });*/
       }
     }
-
-    sortList(data: any): void{
+    sortList(){
+      this.saveAll()
+    }
+    sortList1(data: any): void{
       console.log(this.board.lists);
       let sortReq = {
         boardId : this.board.id,

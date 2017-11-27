@@ -1,16 +1,11 @@
 <div class="board-wrapper">
 <div class="board-base">
 	<h3 style="padding: 0px 20px;margin: 0px;">
-		{{board?.name}}
-				<!-- <button mat-button [matMenuTriggerFor]="menu">Menu</button> -->
-		        <!-- <button md-icon-button [matMenuTriggerFor]="menu"> <md-icon>more_vert</md-icon> </button>
-				<mat-menu #menu="matMenu">
-				  <button mat-menu-item>Add Task!</button>
-				  <button mat-menu-item>Delete List</button>
-				</mat-menu> -->
-
+		<span style="display: inline-block;">{{board?.name}}</span>
 		<!-- <input type="checkbox" [(ngModel)]="dragList"/> -->
 		<!-- <button mat-button (click)= saveAll()>Save</button> -->
+		<mat-spinner [diameter]="20" *ngIf="loading" style="display: inline-block;"></mat-spinner>
+		<small *ngIf="loading" style="display: inline-block;">updating...</small>
 	</h3>
 	<div class="board-container">
 	<div *ngIf="board" class="board" dnd-sortable-container [sortableData]="board.lists" [dropZones]="['container-dropZone']">
@@ -18,10 +13,6 @@
 		    <div class="panel panel-warning">
 		        <div class="panel-heading">
 		        {{list.name}}
-		        <!-- <button mat-button (click)= addTask(list.id)>Add task!</button> -->
-		        <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
-				    <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
-				 </button> -->
 		        <i class="material-icons" [matMenuTriggerFor]="menu">more_vert</i> 
 				<mat-menu #menu="matMenu">
 				  <button mat-menu-item (click)= addTask(list.id)>Add Task!</button>
@@ -38,36 +29,37 @@
 		        </div>
 		    </div>
 	    </div>
-	    <div (click)= openDialog() class="panel">
-		    <div class="panel panel-warning">
+	    <div class="board-list">
+		    <div class="panel panel-warning" (click)= openDialog()>
 		        <div class="panel-heading">
 		        Add List
 		        </div>
 		    </div>
+		    <div class="panel panel-warning">
+		        <div class="panel-heading">
+		        	Members
+		        	<button mat-button [matMenuTriggerFor]="menu">
+		        		Add
+		        	</button>
+		        	<mat-menu #menu="matMenu">
+					  <mat-select placeholder="Assigned to" [(ngModel)]="newMember" (change)="addMember($event)">
+					    <mat-option *ngFor="let user of users" [value]="user.id">
+					      {{ user.username }}
+					    </mat-option>
+					  </mat-select>
+					</mat-menu>
+		        </div>
+		    </div>
+		    <div class="panel-body">
+	            <ul class="list-group">
+	                <li *ngFor="let item of board.members;" class="list-group-item">
+	                	{{item.name}}
+	                	<i class="material-icons" (click)="removeMember(item.id)">delete</i> 
+	                </li>
+	            </ul>
+	        </div>
 	    </div>
 	</div>
 	</div>
 </div>
 </div>
-<!-- <div class="col-sm-3">
-    Drag Containers <input type="checkbox" [(ngModel)]="dragOperation"/>
-    <div dnd-sortable-container [sortableData]="containers" [dropZones]="['container-dropZone']">
-        <div class="col-sm3"
-                *ngFor="let container of containers; let i = index"
-                dnd-sortable [sortableIndex]="i" [dragEnabled]="dragOperation">
-            <div class="panel panel-warning"
-                dnd-sortable-container [sortableData]="container.widgets" [dropZones]="['widget-dropZone']">
-                <div class="panel-heading">
-                    {{container.id}} - {{container.name}}
-                </div>
-                <div class="panel-body">
-                    <ul class="list-group">
-                        <li *ngFor="let widget of container.widgets; let x = index" class="list-group-item"
-                            dnd-sortable [sortableIndex]="x" [dragEnabled]="!dragOperation"
-                            [dragData]="widget">{{widget.name}}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->

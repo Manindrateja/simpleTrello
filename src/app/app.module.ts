@@ -3,6 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+//Socket imports
+// import { SocketIoModule, SocketIoConfig } from 'ng2-socket-io';
+// import { BoardSocket } from './socketService/index';
+// const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
+
 // Material imports
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule} from '@angular/material';
@@ -14,6 +19,7 @@ import {MatInputModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 //import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 //Drag and drop module
 import { DndModule } from 'ng2-dnd';
@@ -45,6 +51,9 @@ import { BoardComponent, CreateListDialog, CreateTaskDialog } from './board/inde
         routing,
         BrowserAnimationsModule,
 
+        //socket imports
+        //SocketIoModule.forRoot(config),
+
         // import d&d module
         DndModule.forRoot(),
         //Material Elements imports
@@ -55,7 +64,8 @@ import { BoardComponent, CreateListDialog, CreateTaskDialog } from './board/inde
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
-        MatMenuModule
+        MatMenuModule,
+        MatProgressSpinnerModule
     ],
     declarations: [
         AppComponent,
@@ -86,6 +96,10 @@ import { BoardComponent, CreateListDialog, CreateTaskDialog } from './board/inde
         fakeBackendProvider,
         MockBackend,
         BaseRequestOptions
+
+
+        //socket services
+        //BoardSocket
     ],
     schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
     bootstrap: [AppComponent]
