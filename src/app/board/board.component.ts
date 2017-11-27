@@ -19,6 +19,7 @@ export class BoardComponent implements OnInit{
     newlistName: string;
     boardId: string = '5a1a81fa52b310469230c1a6';
     board: any;
+    loading: boolean = false;
 
     dragList: boolean = true;
     setDragList(value): void{
@@ -43,7 +44,16 @@ export class BoardComponent implements OnInit{
     }
 
     private getBoard() {
-        this.boardService.getBoard(this.boardId).subscribe(board => { this.board = board; });
+        this.loading = true;
+        this.boardService.getBoard(this.boardId).subscribe(board => { 
+          this.board = board; 
+          this.loading = false;
+          for (let item of this.board.lists) {
+            for (let task of item.tasklists){
+              task.fromlistId = item.id;
+            }
+          }
+        });
     }
 
     private getAllUsers() {
@@ -88,12 +98,85 @@ export class BoardComponent implements OnInit{
         });
     }
 
-    taskItemMovedordered(data : any): void{
-       console.log(data);
+    sortMoveTask(data : any, list: any, index: number): void{
+
+      console.log(list);
+      console.log(data,  list.id);
+      
+      if(list.id === data.fromlistId){
+        console.log('sortTask');
+        let sortReq = {
+          listId : list.id,
+          tasklists : []
+        }
+
+        for (let item of list.tasklists) {
+          sortReq.tasklists.push(item.id)
+        }
+        console.log(sortReq);
+
+        this.boardService.sortTask(sortReq).subscribe(response => { this.getBoard() });
+      }else{
+
+        let sortReq = {
+          to : {
+              id: list.id,
+              tasklists : []
+          },
+          fromlistId : data.fromlistId,
+          id: data.id
+        }
+
+        for (let item of list.tasklists) {
+          sortReq.to.tasklists.push(item.id)
+        }
+
+        console.log(sortReq);
+
+        this.boardService.moveTask(sortReq).subscribe(response => { this.getBoard() });
+
+        /*let sortReq = {
+          to : {
+              id: list.id,
+              tasklists : []
+          },
+          from : {
+              id: data.fromlistId,
+              tasklists : []
+          }
+        }
+
+        for (let item of list.tasklists) {
+          sortReq.to.tasklists.push(item.id)
+        }
+
+        //console.log(this.board);
+        let fromList = this.board.lists
+        for( let listitem of fromList){
+          if(listitem.id == data.fromlistId ){
+            for (let item of listitem.tasklists) {
+              sortReq.from.tasklists.push(item.id)
+            }
+          }
+        }
+
+        console.log(sortReq);
+
+        this.boardService.moveTask(sortReq).subscribe(response => { this.getBoard() });*/
+      }
     }
 
-    listItemorder(data: any): void{
-      console.log(data);
+    sortList(data: any): void{
+      console.log(this.board.lists);
+      let sortReq = {
+        boardId : this.board.id,
+        lists : []
+      }
+      for (let item of this.board.lists) {
+        sortReq.lists.push(item.id)
+      }
+      console.log(sortReq);
+      this.boardService.sortList(sortReq).subscribe(response => { this.getBoard() });
     }
 }
 
@@ -128,6 +211,7 @@ export class CreateListDialog {
 })
 export class CreateTaskDialog implements OnInit {
 
+  users: any[] = []; 
    constructor(
     public dialogRef: MatDialogRef<CreateTaskDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any, private userService: UserService) {

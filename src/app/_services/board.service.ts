@@ -25,7 +25,6 @@ export class BoardService {
         return this.http.post('http://127.0.0.1:5000/deleteBoard', board, this.jwt()).map((response: Response) => response.json());
     }
 
-
     createList(list: any) {
         return this.http.post('http://127.0.0.1:5000/createList', list, this.jwt()).map((response: Response) => response.json());
     }
@@ -34,26 +33,17 @@ export class BoardService {
         return this.http.post('http://127.0.0.1:5000/createTask', task, this.jwt()).map((response: Response) => response.json());
     }
 
-    // private helper methods
+    sortList(data: any){
+        return this.http.post('http://127.0.0.1:5000/sortList', data, this.jwt()).map((response: Response) => response.json());
+    }
 
-    // private jwt() {
-    //     // create authorization header with jwt token
-    //     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    //     if (currentUser && currentUser.token) {
-    //         let headers = new Headers({ 'token': currentUser.token });
-            
-    //         headers.append( Content-Type: 'application/json');
-            
-    //         let res = new RequestOptions({ headers: headers });
-    //         return res;
-    //     }
-    //     else
-    //     {
-    //         let headers = new Headers({ 'Content-Type': 'application/json' });
-    //         let res = new RequestOptions({ headers: headers });
-    //         return res;
-    //     }
-    // }
+    sortTask(data: any){
+        return this.http.post('http://127.0.0.1:5000/sortTask', data, this.jwt()).map((response: Response) => response.json());
+    }
+
+    moveTask(data: any){
+        return this.http.post('http://127.0.0.1:5000/moveSortTask', data, this.jwt()).map((response: Response) => response.json());
+    }
 
     private jwt() {
 
@@ -62,7 +52,7 @@ export class BoardService {
         // create authorization header with jwt token
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {
-            headers.append( 'token': currentUser.token);
+            headers.append( 'token', currentUser.token);
         }
             
         let res = new RequestOptions({ headers: headers });

@@ -13,7 +13,7 @@
 	</h3>
 	<div class="board-container">
 	<div *ngIf="board" class="board" dnd-sortable-container [sortableData]="board.lists" [dropZones]="['container-dropZone']">
-	    <div  *ngFor="let list of board.lists; let x= index" class="board-list" dnd-sortable [sortableIndex]="x" [dragEnabled]="dragList" (onDropSuccess)="listItemorder(list)">
+	    <div  *ngFor="let list of board.lists; let x= index" class="board-list" dnd-sortable [sortableIndex]="x" [dragEnabled]="dragList && !loading" (onDropSuccess)="sortList(list)">
 		    <div class="panel panel-warning">
 		        <div class="panel-heading">
 		        {{list.name}}
@@ -30,9 +30,10 @@
 		        </div>
 		        <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="list.tasklists" style="200px">
 		            <ul class="list-group" *ngIf="list.tasklists.length" >
-		                <li *ngFor="let item of list.tasklists; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i"  [dragEnabled]="!dragList" (mouseenter)="setDragList(false);$event.stopPropagation();" (mouseleave)="setDragList(true);$event.stopPropagation();" (onDropSuccess)="taskItemMovedordered(item)">
+		                <li *ngFor="let item of list.tasklists; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i"  [dragEnabled]="!dragList && !loading"  (onDropSuccess)="sortMoveTask(item, list, number)" (mouseenter)="setDragList(false);" (mouseleave)="setDragList(true);">
 		                	{{item.name}} - {{item.orderNumber}}
 		                </li>
+		                <!-- (mouseenter)="setDragList(false);$event.stopPropagation();" (mouseleave)="setDragList(true);$event.stopPropagation();" -->
 		            </ul>
 		        </div>
 		    </div>
