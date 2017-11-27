@@ -84,10 +84,34 @@ export class BoardComponent implements OnInit{
         });
     }
 
+    saveAll(): void {
+      let lboard = {
+        id : this.board.id,
+        lists: [],
+        listIds: []
+      }
+
+      for(let list of this.board.lists){
+        lboard.listIds.push(list.id);
+        let temp = {
+          id: list.id,
+          tasklists: []
+        }
+        for (let item of list.tasklists){
+          console.log(item)
+          temp.tasklists.push(item.id)
+        }
+        lboard.lists.push(temp);
+
+      }
+      console.log(lboard);
+      
+      this.boardService.saveBoard(lboard).subscribe(response => { this.getBoard() });
+    }
+
     addTask(id): void {
         let dialogRef = this.dialog.open(CreateTaskDialog, {
           width: '50%',
-          // data: { name: this.name, animal: this.animal }
           data: { listId: id }
         });
 
@@ -96,6 +120,13 @@ export class BoardComponent implements OnInit{
           if(result && result.name)
               this.createTask(result)
         });
+    }
+
+    sortMoveTask1(): void{
+
+    }
+    sortList1():void{
+
     }
 
     sortMoveTask(data : any, list: any, index: number): void{

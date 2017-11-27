@@ -45,9 +45,13 @@ export class BoardService {
         return this.http.post('http://127.0.0.1:5000/moveSortTask', data, this.jwt()).map((response: Response) => response.json());
     }
 
+    saveBoard(data: any){
+        return this.http.post('http://127.0.0.1:5000/saveBoard', data, this.jwt()).map((response: Response) => response.json());
+    }
+
     private jwt() {
 
-        let headers = new Headers({ 'Content-Type': 'application/json' });
+        var headers = new Headers({ 'Content-Type': 'application/json' });
 
         // create authorization header with jwt token
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
