@@ -1,7 +1,8 @@
 <h2 mat-dialog-title>New Task</h2>
 <mat-dialog-content>
-	<mat-form-field>
-    	<input matInput #input placeholder="Task name" [(ngModel)]="data.name">
+	<mat-form-field hintLabel="Max 30 characters">
+    	<input matInput #input maxlength="30" placeholder="Task name" [(ngModel)]="data.name">
+      <mat-hint align="end">{{input.value?.length || 0}}/30</mat-hint>
   	</mat-form-field>
   	<!-- <mat-form-field>
     	<input matInput #input placeholder="Task title" [(ngModel)]="data.title">

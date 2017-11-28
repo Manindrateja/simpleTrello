@@ -7,13 +7,12 @@ import { BoardService } from '../_services/index';
 @Component({
     moduleId: module.id,
     templateUrl: 'home.component.html',
-      styleUrls: ['home.component.css']
+      styleUrls: ['home.component.scss']
 })
 
 export class HomeComponent implements OnInit {
     currentUser: User;
-    users: User[] = [];
-    //boards: <Array> = [];
+    boards: any[] = [];
 
     newboard: string;
 
@@ -31,11 +30,25 @@ export class HomeComponent implements OnInit {
     }
 
     private getAllboards() {
-        this.boardService.getAllboards().subscribe(users => { this.users = users; });
+      this.boardService.getAllboards().subscribe(response => { 
+        this.boards = response; 
+        for (let item of this.boards){
+          item.color = this.getRandomColor();
+        }
+      });
+    }
+
+    getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
     }
 
     private createBoard(board){
-        this.boardService.createBoard(board).subscribe(users => { this.getAllboards() });
+        this.boardService.createBoard(board).subscribe(response => { this.getAllboards() });
     }
 
     gotoBoard(board){
@@ -71,7 +84,7 @@ export class CreateBoardDialog {
   constructor(
     public dialogRef: MatDialogRef<CreateBoardDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-     
+       this.data.name = '';
     }
 
     sendData(): void {

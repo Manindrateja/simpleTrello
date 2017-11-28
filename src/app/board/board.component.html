@@ -1,11 +1,15 @@
 <div class="board-wrapper">
 <div class="board-base">
-	<h3 style="padding: 0px 20px;margin: 0px;">
-		<span style="display: inline-block;">{{board?.name}}</span>
+	<h3 class="board-header" style="">
+		<span>{{board?.name}}</span>
 		<!-- <input type="checkbox" [(ngModel)]="dragList"/> -->
 		<!-- <button mat-button (click)= saveAll()>Save</button> -->
-		<mat-spinner [diameter]="20" *ngIf="loading" style="display: inline-block;"></mat-spinner>
-		<small *ngIf="loading" style="display: inline-block;">updating...</small>
+		<small *ngIf="loading">
+			updating...<mat-spinner [diameter]="20" style="display : inline-block;"></mat-spinner>
+		</small>
+		<button mat-raised-button color="primary" class="pull-right" (click)= openDialog()>
+	        Add List
+	    </button>
 	</h3>
 	<div class="board-container">
 	<div *ngIf="board" class="board" dnd-sortable-container [sortableData]="board.lists" [dropZones]="['container-dropZone']">
@@ -13,34 +17,69 @@
 		    <div class="panel panel-warning">
 		        <div class="panel-heading">
 		        {{list.name}}
-		        <i class="material-icons" [matMenuTriggerFor]="menu">more_vert</i> 
+		        <i class="material-icons pull-right" [matMenuTriggerFor]="menu">more_horiz</i> 
 				<mat-menu #menu="matMenu">
 				  <button mat-menu-item (click)= addTask(list.id)>Add Task!</button>
-				  <button mat-menu-item>Delete List</button>
+				  <button mat-menu-item (click)= deleteList(list.id)>Delete List</button>
 				</mat-menu>
 		        </div>
 		        <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="list.tasklists" style="200px">
-		            <ul class="list-group" *ngIf="list.tasklists.length" >
+		            <!-- <ul class="list-group" *ngIf="list.tasklists.length" >
 		                <li *ngFor="let item of list.tasklists; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i"  [dragEnabled]="!dragList && !loading"  (onDropSuccess)="sortMoveTask(item, list, number)" (mouseenter)="setDragList(false);$event.stopPropagation();" >
 		                	{{item.name}} - {{item.orderNumber}}
 		                </li>
-		                <!-- (mouseenter)="setDragList(false);$event.stopPropagation();" (mouseleave)="setDragList(true);$event.stopPropagation();" -->
-		            </ul>
+		            </ul> -->
+		            <!-- (mouseenter)="setDragList(false);$event.stopPropagation();" (mouseleave)="setDragList(true);$event.stopPropagation();" -->
+		            <mat-accordion  *ngIf="list.tasklists.length">
+						  <mat-expansion-panel *ngFor="let item of list.tasklists; let i = index" dnd-sortable [sortableIndex]="i"  [dragEnabled]="!dragList && !loading"  (onDropSuccess)="sortMoveTask(item, list, number)" (mouseenter)="setDragList(false);$event.stopPropagation();">
+						    <mat-expansion-panel-header>
+						      <mat-panel-title>
+						        <span *ngIf="!item.edit">{{item.name}}</span>
+						        <mat-form-field *ngIf="item.edit" hintLabel="Max 30 characters">
+							      <input #input matInput maxlength="30" placeholder="title" [(ngModel)]="item.name1">
+							      <mat-hint align="end">{{input.value?.length || 0}}/30</mat-hint>
+							    </mat-form-field>
+						      </mat-panel-title>
+						      <!-- <mat-panel-description *ngIf="!item.edit">
+						        {{item.assignedTo?.username}}
+						      </mat-panel-description> -->
+						    </mat-expansion-panel-header>
+						    <p *ngIf="!item.edit">
+						    	{{item?.description}}
+						    </p>
+						    <div *ngIf="!item.edit" style="font-size: 12px">
+						    	<i>{{item.createdBy?.username}} </i>
+						    	<i class="material-icons" style="font-size: 12px">arrow_forward</i> 
+						    	<i>{{item.assignedTo?.username}} </i>- 
+						    	<small>{{item.createdAt | date}}</small>
+						    </div>
+						    <mat-form-field *ngIf="item.edit">
+						      <textarea matInput placeholder="description" [(ngModel)]="item.description1"></textarea>
+						    </mat-form-field>
+						    <br>
+						    <mat-form-field *ngIf="item.edit">
+						      	<mat-select placeholder="Assigned to" [(ngModel)]="item.assignedTo1">
+							    	<mat-option *ngFor="let user of users" [value]="user">
+							      		{{ user.username }}
+							    	</mat-option>
+							  </mat-select>
+						    </mat-form-field>
+						    <mat-action-row>
+						      	<button *ngIf="!item.edit" mat-button color="primary" (click)="editTask(item)">Edit</button>
+						      	<button *ngIf="!item.edit" mat-button color="primary" (click)="deleteTask(item)">Delete</button>
+						     	<button *ngIf="item.edit" mat-button color="primary" (click)="saveTask(item)">Save</button>
+						     	<button *ngIf="item.edit" mat-button color="primary" (click)="editTask(item)">Cancel</button>
+						    </mat-action-row>
+						  </mat-expansion-panel>
+					</mat-accordion>
 		        </div>
 		    </div>
 	    </div>
 	    <div class="board-list">
-		    <div class="panel panel-warning" (click)= openDialog()>
-		        <div class="panel-heading">
-		        Add List
-		        </div>
-		    </div>
 		    <div class="panel panel-warning">
 		        <div class="panel-heading">
 		        	Members
-		        	<button mat-button [matMenuTriggerFor]="menu">
-		        		Add
-		        	</button>
+		        	<i class="material-icons pull-right" [matMenuTriggerFor]="menu">more_horiz</i> 
 		        	<mat-menu #menu="matMenu">
 					  <mat-select placeholder="Assigned to" [(ngModel)]="newMember" (change)="addMember($event)">
 					    <mat-option *ngFor="let user of users" [value]="user.id">
@@ -52,9 +91,13 @@
 		    </div>
 		    <div class="panel-body">
 	            <ul class="list-group">
+	            	<li class="list-group-item owner">
+	            		{{board.owner.name}}- <small>{{board.owner.email}}</small>
+	            		<i class="pull-right">Owner</i> 
+	            	</li>
 	                <li *ngFor="let item of board.members;" class="list-group-item">
-	                	{{item.name}}
-	                	<i class="material-icons" (click)="removeMember(item.id)">delete</i> 
+	                	{{item.name}}- <small>{{item.email}}</small>
+	                	<i class="material-icons pull-right" (click)="removeMember(item.id)">delete</i> 
 	                </li>
 	            </ul>
 	        </div>

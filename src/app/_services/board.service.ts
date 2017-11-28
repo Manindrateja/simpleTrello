@@ -29,8 +29,20 @@ export class BoardService {
         return this.http.post('http://127.0.0.1:5000/createList', list, this.jwt()).map((response: Response) => response.json());
     }
 
+    deleteList(list: any) {
+        return this.http.post('http://127.0.0.1:5000/deleteList', list, this.jwt()).map((response: Response) => response.json());
+    }
+
     createTask(task: any) {
         return this.http.post('http://127.0.0.1:5000/createTask', task, this.jwt()).map((response: Response) => response.json());
+    }
+
+    deleteTask(task: any) {
+        return this.http.post('http://127.0.0.1:5000/deleteTask', task, this.jwt()).map((response: Response) => response.json());
+    }
+
+    updateTask(task: any) {
+        return this.http.post('http://127.0.0.1:5000/updateTask', task, this.jwt()).map((response: Response) => response.json());
     }
 
     sortList(data: any){

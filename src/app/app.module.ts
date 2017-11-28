@@ -20,6 +20,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatMenuModule} from '@angular/material/menu';
 //import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatExpansionModule} from '@angular/material/expansion';
+//import {MatToolbarModule} from '@angular/material/toolbar';
 
 //Drag and drop module
 import { DndModule } from 'ng2-dnd';
@@ -65,7 +67,9 @@ import { BoardComponent, CreateListDialog, CreateTaskDialog } from './board/inde
         MatInputModule,
         MatSelectModule,
         MatMenuModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatExpansionModule
+        //MatToolbarModule
     ],
     declarations: [
         AppComponent,

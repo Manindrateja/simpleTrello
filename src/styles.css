@@ -1,9 +1,14 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .navbar {
-    background: rgba(0,0,0,.15);
+    background: #4054B2;
     margin: 0px;
     border: 1px solid transparent;
+    border-radius: 0px;
+    height: 52px;
+}
+nav.navbar a{
+    color: #fff;
 }
 /*
 body{
