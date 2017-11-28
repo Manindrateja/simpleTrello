@@ -25,5 +25,5 @@
   <!-- <button mat-button [mat-dialog-close]="sendData()">Cancel</button> -->
   <button mat-button [mat-dialog-close]>Cancel</button>
   <!-- Can optionally provide a result for the closing dialog. -->
-  <button mat-button [mat-dialog-close]="data" [disabled]="!data.name && !data.title && !data.description && !data.assignedTo">Create</button>
+  <button mat-button [mat-dialog-close]="data" [disabled]="!data.name || !data.description || !data.assignedTo">Create</button>
 </mat-dialog-actions>

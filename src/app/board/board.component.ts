@@ -14,7 +14,7 @@ import { Task } from '../_models/index';
 })
 
 export class BoardComponent implements OnInit{
-
+    currentUser: any;
     users: any[] = [];
     newlistName: string;
     boardId: string = '5a1a81fa52b310469230c1a6';
@@ -27,7 +27,7 @@ export class BoardComponent implements OnInit{
       this.dragList = value;
     }
     constructor(private boardService: BoardService, public userService: UserService, public dialog: MatDialog) {
-         
+         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     //this.router.navigate(['/login']);

@@ -13,6 +13,7 @@
           (click)="gotoBoard(board)"
           [style.background]="board.color"
           >
+          <i class="material-icons" *ngIf="board.owner.id == currentUser.id" style="font-size: 32px;position: absolute;top: 0px;right: 0px;color: #fff;" (click)="deleteBoard(board.id);$event.stopPropagation();">delete</i> 
             {{board.name}}
       </mat-grid-tile>
     </mat-grid-list>

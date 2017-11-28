@@ -25,8 +25,8 @@ export class HomeComponent implements OnInit {
         this.getAllboards();
     }
 
-    deleteBoard(id: number) {
-        this.boardService.deleteBoard(id).subscribe(() => { this.getAllboards() });
+    deleteBoard(id: string) {
+        this.boardService.deleteBoard({ boardId : id}).subscribe(() => { this.getAllboards() });
     }
 
     private getAllboards() {
